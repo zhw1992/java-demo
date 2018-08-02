@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+	http://www.springframework.org/schema/beans/spring-beans.xsd  
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+	
+	<dubbo:application name="personal-dubbo-server" />
+	
+	<dubbo:monitor protocol="registry" />
+
+	<dubbo:registry protocol="zookeeper" address="172.16.21.5:2181,172.16.21.6:2181,172.16.21.7:2181" />
+    <!-- 多协议配置 暴露dubbo和hessian协议 -->
+	<dubbo:protocol name="dubbo" port="20880" />
+	
+    <!-- 多协议配置 暴露dubbo和hessian协议，消费方使用哪个协议就配置哪个协议 -->
+		
+	<dubbo:service interface="com.personal.study.dubbo.api.GetWeatherService"
+		ref="getWeatherService" protocol="dubbo" timeout="40000" retries="0" version="1.1.0"/>
+	
+	<bean id="getWeatherService" class="com.personal.study.dubbo.api.impl.GetWeatherServiceImpl"></bean>
+</beans>
